@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Built a Treasury Analyst in Claude / Rafael Pardo</title>
+<link rel="canonical" href="https://rpardo.ai/es/treasury-analyst-claude.html">
+<link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-analyst-claude.html">
+<link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-analyst-claude.html">
+<link rel="alternate" hreflang="x-default" href="https://rpardo.ai/treasury-analyst-claude.html">
+<meta name="description" content="Un recorrido práctico por el diseño de un analista de tesorería con IA. Qué funcionó, qué falló y la brecha entre prompt engineering y diseño de producto.">
+<meta property="og:title" content="How I Built a Treasury Analyst in Claude (And What It Taught Me About AI Product Design)">
+<meta property="og:description" content="Qué funcionó, qué falló y la brecha entre prompt engineering y diseño de producto real.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rpardo.ai/es/treasury-analyst-claude.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230E1520'/><text x='50' y='68' font-family='monospace' font-size='52' font-weight='700' fill='%238AACC6' text-anchor='middle'>R</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #020202; --black: #080808; --deep: #0E1520;
+    --accent: #5A7A9B; --accent-hi: #8AACC6;
+    --steel: #525250; --ash: #6E6B64; --warm: #96918A;
+    --silver: #BAB6AE; --cream: #F0EDE6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none; opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat; background-size: 180px;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 48px; height: 64px; display: flex;
+    align-items: center; justify-content: space-between;
+    background: rgba(2,2,2,0.85); backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(90,122,155,0.1);
+  }
+  .nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 3px; color: var(--cream); text-decoration: none; text-transform: uppercase; }
+  .nav-back { font-size: 12px; font-weight: 400; letter-spacing: 1px; color: var(--warm); text-decoration: none; transition: color 0.3s ease; }
+  .nav-back:hover { color: var(--cream); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-lang { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; display: flex; align-items: center; gap: 6px; }
+  .nav-lang span { padding: 3px 7px; border-radius: 3px; transition: color 0.3s ease, background 0.3s ease; }
+  .nav-lang .active { color: var(--cream); background: rgba(90,122,155,0.15); }
+  .nav-lang .inactive { color: var(--ash); cursor: pointer; }
+  .nav-lang .inactive:hover { color: var(--cream); }
+  .nav-lang-sep { color: var(--steel); font-weight: 300; user-select: none; }
+  .article-header { padding: 140px 40px 60px; max-width: 720px; margin: 0 auto; }
+  .article-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .article-title { font-family: 'Newsreader', serif; font-size: 38px; font-weight: 300; line-height: 1.3; margin-bottom: 20px; }
+  .article-subtitle { font-size: 16px; font-weight: 300; color: var(--warm); line-height: 1.7; margin-bottom: 32px; }
+  .article-info { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--ash); padding-bottom: 40px; border-bottom: 1px solid rgba(90,122,155,0.08); }
+  .article-body { max-width: 720px; margin: 0 auto; padding: 48px 40px 100px; }
+  .article-body p { font-size: 16px; font-weight: 300; color: var(--silver); line-height: 1.9; margin-bottom: 24px; }
+  .article-body strong { color: var(--cream); font-weight: 500; }
+  .article-body em { color: var(--accent-hi); font-style: italic; }
+  .article-body h2 { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 400; color: var(--cream); margin: 48px 0 20px; }
+  .article-body h3 { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600; color: var(--cream); letter-spacing: 0.5px; margin: 36px 0 12px; }
+  .article-body blockquote { border-left: 2px solid var(--accent); padding: 4px 0 4px 24px; margin: 32px 0; }
+  .article-body blockquote p { font-family: 'Newsreader', serif; font-size: 18px; font-style: italic; color: var(--accent-hi); line-height: 1.7; }
+  .article-body ul, .article-body ol { margin: 0 0 24px 20px; color: var(--silver); }
+  .article-body li { font-size: 16px; font-weight: 300; line-height: 1.8; margin-bottom: 8px; }
+  .article-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--deep);
+    color: var(--accent-hi);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .article-body pre {
+    background: var(--deep);
+    border: 1px solid rgba(90,122,155,0.1);
+    border-radius: 6px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+  .article-body pre code {
+    background: none;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--silver);
+  }
+  .callout { background: var(--deep); border-left: 3px solid var(--accent); padding: 24px 28px; margin: 36px 0; border-radius: 0 6px 6px 0; }
+  .callout p { margin-bottom: 8px; font-size: 14px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .arch-diagram {
+    background: var(--deep);
+    border: 1px solid rgba(90,122,155,0.12);
+    border-radius: 8px;
+    padding: 32px;
+    margin: 36px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--silver);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .arch-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .article-footer { max-width: 720px; margin: 0 auto; padding: 0 40px 80px; border-top: 1px solid rgba(90,122,155,0.08); padding-top: 40px; }
+  .author-info { flex: 1; }
+  .author-name { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 4px; }
+  .author-bio { font-size: 13px; font-weight: 300; color: var(--warm); line-height: 1.6; }
+  .author-bio a { color: var(--accent-hi); text-decoration: none; }
+  .author-bio a:hover { color: var(--cream); }
+  footer { background: var(--void); padding: 48px 40px; border-top: 1px solid rgba(90,122,155,0.06); text-align: center; }
+  .footer-logo { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--ash); margin-bottom: 12px; }
+  .footer-copy { font-size: 11px; color: var(--steel); }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .article-header { padding: 100px 24px 40px; }
+    .article-title { font-size: 28px; }
+    .article-body { padding: 32px 24px 80px; }
+    .article-footer { padding: 0 24px 60px; padding-top: 32px; }
+    .arch-diagram { font-size: 10px; padding: 16px; }
+  }
+
+  .article-cta { max-width: 720px; margin: 0 auto; padding: 0 40px 48px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .article-cta a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-hi); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(90,122,155,0.3); border-radius: 2px; transition: all 0.3s; }
+  .article-cta a:hover { background: rgba(90,122,155,0.1); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">rpardo.ai</a>
+  <div class="nav-right">
+    <a href="/es/#insights" class="nav-back">← Volver a Artículos</a>
+    <div class="nav-lang">
+      <a href="/treasury-analyst-claude.html" style="text-decoration:none"><span class="inactive">EN</span></a>
+      <span class="nav-lang-sep">/</span>
+      <span class="active">ES</span>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="article-header">
+    <div class="article-meta">Técnico / Construyendo con Claude</div>
+    <h1 class="article-title">Cómo construí un analista de tesorería en Claude (y lo que me enseñó sobre diseño de productos de IA)</h1>
+    <p class="article-subtitle">La brecha entre prompt engineering y diseño de producto es más amplia de lo que la mayoría piensa.</p>
+    <div class="article-info">Rafael Pardo · 11 min de lectura · 14 febrero 2026</div>
+  </div>
+
+  <div class="article-body">
+    <p>
+      Hace seis meses, me propuse construir algo concreto: un sistema de IA capaz de hacer lo que yo había estado haciendo manualmente durante siete años como responsable de operaciones de tesorería. No un chatbot. No un resumidor. Un <strong>analista de tesorería</strong> capaz de ingerir datos financieros reales, razonar sobre ellos como lo haría un operador experimentado, y producir outputs que un CFO pudiera realmente utilizar.
+    </p>
+    <p>
+      Elegí Claude para la construcción. Lo que siguió fue un curso acelerado sobre la diferencia entre prompt engineering (conseguir que un LLM produzca buen texto) y diseño de productos de IA (construir un sistema que produzca de forma fiable decisiones correctas en condiciones reales). No son lo mismo, y confundirlos es el error más común que veo en el espacio de productos de IA.
+    </p>
+    <p>
+      Este es un recorrido por lo que construí, las decisiones de arquitectura detrás de cada componente, qué funcionó, qué falló y los principios de diseño que extraje del proceso.
+    </p>
+
+    <h2>El problema: la previsión de tesorería está rota</h2>
+    <p>
+      Todos los equipos de tesorería con los que he trabajado prevén el flujo de caja de la misma forma. Toman comportamientos históricos de cobro (qué porcentaje de facturas se paga a 30, 60, 90 días), calculan la media y la aplican al portfolio actual de cuentas por cobrar. Es un ejercicio de hoja de cálculo, normalmente mantenido por una persona que entiende las fórmulas, y se rompe en el momento en que esa persona se va de vacaciones.
+    </p>
+    <p>
+      El problema fundamental no es la complejidad. Es que el enfoque estándar ignora al menos tres cosas que importan enormemente: <strong>estacionalidad</strong> (los clientes pagan distinto en diciembre que en marzo), <strong>sesgo de recencia</strong> (el comportamiento de cobro del último mes es más predictivo que el de hace 12 meses), y <strong>pagos parciales</strong> (un porcentaje creciente de cobros que los modelos tradicionales ignoran o clasifican mal).
+    </p>
+    <p>
+      Yo ya lo había resuelto manualmente. Construí un modelo de comportamiento de cobro usando medias móviles ponderadas con factor de decaimiento (λ=0,9, lo que significa que los datos de cada mes pesan un 10% menos que el siguiente), índices estacionales calculados por bucket de cobro, y tratamiento explícito de patrones de pagos parciales. Mejoró la precisión de las previsiones aproximadamente un 30% respecto a las medias simples. Pero era una hoja de cálculo, y me llevaba un día entero cada mes actualizarla en 10 países.
+    </p>
+    <p>
+      La pregunta era: ¿podía Claude hacer esto de forma fiable?
+    </p>
+
+    <h2>Arquitectura: skills, no prompts</h2>
+    <p>
+      Lo primero que aprendí es que un prompt único, por bien diseñado que esté, es la abstracción equivocada para una tarea analítica compleja. Lo que necesitas es un <strong>skill</strong>: un conjunto estructurado de instrucciones, contexto y definiciones de herramientas que el modelo puede usar para ejecutar un workflow multi-step.
+    </p>
+    <p>
+      Mi skill de analista de tesorería tiene cuatro componentes:
+    </p>
+
+    <span class="arch-label">System Architecture</span>
+    <div style="margin:36px 0;overflow-x:auto;">
+      <svg viewBox="0 0 640 520" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:0 auto;">
+        <defs>
+          <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#12202e"/>
+            <stop offset="100%" stop-color="#0E1520"/>
+          </linearGradient>
+          <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5A7A9B" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#5A7A9B" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#5A7A9B" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Main card -->
+        <rect x="32" y="16" width="576" height="260" rx="8" fill="url(#cardGrad)" stroke="#5A7A9B" stroke-opacity="0.15" stroke-width="1"/>
+
+        <!-- Title bar -->
+        <rect x="32" y="16" width="576" height="40" rx="8" fill="#5A7A9B" fill-opacity="0.07"/>
+        <rect x="32" y="48" width="576" height="8" rx="0" fill="url(#cardGrad)"/>
+        <text x="320" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="600" letter-spacing="3" fill="#8AACC6">SKILL DEFINITION</text>
+
+        <!-- Four rows -->
+        <!-- Context -->
+        <circle cx="72" cy="88" r="4" fill="#5A7A9B" fill-opacity="0.5"/>
+        <text x="92" y="84" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="1.5" fill="#8AACC6" text-transform="uppercase">CONTEXT</text>
+        <text x="92" y="100" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Domain rules, terminology, country-specific norms</text>
+
+        <!-- Divider -->
+        <line x1="64" y1="118" x2="576" y2="118" stroke="#5A7A9B" stroke-opacity="0.08" stroke-width="1"/>
+
+        <!-- Tools -->
+        <circle cx="72" cy="142" r="4" fill="#5A7A9B" fill-opacity="0.5"/>
+        <text x="92" y="138" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="1.5" fill="#8AACC6">TOOLS</text>
+        <text x="92" y="154" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Data ingestion, SQL generation, calculation engine, output formatting</text>
+
+        <!-- Divider -->
+        <line x1="64" y1="172" x2="576" y2="172" stroke="#5A7A9B" stroke-opacity="0.08" stroke-width="1"/>
+
+        <!-- Workflow -->
+        <circle cx="72" cy="196" r="4" fill="#5A7A9B" fill-opacity="0.5"/>
+        <text x="92" y="192" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="1.5" fill="#8AACC6">WORKFLOW</text>
+        <!-- Flow pills -->
+        <rect x="92" y="201" width="60" height="22" rx="11" fill="#5A7A9B" fill-opacity="0.1" stroke="#5A7A9B" stroke-opacity="0.2" stroke-width="0.75"/>
+        <text x="122" y="216" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="10" font-weight="400" fill="#BAB6AE">Ingest</text>
+        <text x="164" y="216" font-family="'Outfit',sans-serif" font-size="11" fill="#5A7A9B">→</text>
+        <rect x="178" y="201" width="68" height="22" rx="11" fill="#5A7A9B" fill-opacity="0.1" stroke="#5A7A9B" stroke-opacity="0.2" stroke-width="0.75"/>
+        <text x="212" y="216" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="10" font-weight="400" fill="#BAB6AE">Validate</text>
+        <text x="258" y="216" font-family="'Outfit',sans-serif" font-size="11" fill="#5A7A9B">→</text>
+        <rect x="272" y="201" width="66" height="22" rx="11" fill="#5A7A9B" fill-opacity="0.1" stroke="#5A7A9B" stroke-opacity="0.2" stroke-width="0.75"/>
+        <text x="305" y="216" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="10" font-weight="400" fill="#BAB6AE">Analyse</text>
+        <text x="350" y="216" font-family="'Outfit',sans-serif" font-size="11" fill="#5A7A9B">→</text>
+        <rect x="364" y="201" width="74" height="22" rx="11" fill="#5A7A9B" fill-opacity="0.1" stroke="#5A7A9B" stroke-opacity="0.2" stroke-width="0.75"/>
+        <text x="401" y="216" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="10" font-weight="400" fill="#BAB6AE">Calculate</text>
+        <text x="450" y="216" font-family="'Outfit',sans-serif" font-size="11" fill="#5A7A9B">→</text>
+        <rect x="464" y="201" width="62" height="22" rx="11" fill="#5A7A9B" fill-opacity="0.15" stroke="#5A7A9B" stroke-opacity="0.3" stroke-width="0.75"/>
+        <text x="495" y="216" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="10" font-weight="500" fill="#8AACC6">Output</text>
+
+        <!-- Divider -->
+        <line x1="64" y1="238" x2="576" y2="238" stroke="#5A7A9B" stroke-opacity="0.08" stroke-width="1"/>
+
+        <!-- Guards -->
+        <circle cx="72" cy="258" r="4" fill="#5A7A9B" fill-opacity="0.5"/>
+        <text x="92" y="254" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="1.5" fill="#8AACC6">GUARDS</text>
+        <text x="92" y="270" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Confidence thresholds, sanity checks, escalation rules</text>
+
+        <!-- Connection lines -->
+        <line x1="200" y1="276" x2="200" y2="340" stroke="#5A7A9B" stroke-opacity="0.25" stroke-width="1"/>
+        <polygon points="196,338 204,338 200,346" fill="#5A7A9B" fill-opacity="0.4"/>
+
+        <line x1="440" y1="276" x2="440" y2="340" stroke="#5A7A9B" stroke-opacity="0.25" stroke-width="1"/>
+        <polygon points="436,338 444,338 440,346" fill="#5A7A9B" fill-opacity="0.4"/>
+
+        <!-- Horizontal accent line -->
+        <rect x="32" y="326" width="576" height="1" fill="url(#accentLine)" opacity="0.15"/>
+
+        <!-- Data Layer card -->
+        <rect x="32" y="350" width="268" height="154" rx="8" fill="url(#cardGrad)" stroke="#5A7A9B" stroke-opacity="0.12" stroke-width="1"/>
+        <text x="166" y="380" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="2" fill="#5A7A9B">DATA LAYER</text>
+
+        <!-- Data items -->
+        <circle cx="64" cy="408" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="78" y="412" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">NetSuite data</text>
+        <circle cx="64" cy="432" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="78" y="436" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Bank statements</text>
+        <circle cx="64" cy="456" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="78" y="460" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Cohort files</text>
+        <circle cx="64" cy="480" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="78" y="484" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Country configs</text>
+
+        <!-- Output Layer card -->
+        <rect x="340" y="350" width="268" height="154" rx="8" fill="url(#cardGrad)" stroke="#5A7A9B" stroke-opacity="0.12" stroke-width="1"/>
+        <text x="474" y="380" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" letter-spacing="2" fill="#5A7A9B">OUTPUT LAYER</text>
+
+        <!-- Output items -->
+        <circle cx="372" cy="408" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="386" y="412" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Looker-ready forecasts</text>
+        <circle cx="372" cy="432" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="386" y="436" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Slack alerts</text>
+        <circle cx="372" cy="456" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="386" y="460" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Exception reports</text>
+        <circle cx="372" cy="480" r="2.5" fill="#5A7A9B" fill-opacity="0.4"/>
+        <text x="386" y="484" font-family="'Outfit',sans-serif" font-size="12" fill="#BAB6AE">Confidence scores</text>
+      </svg>
+    </div>
+
+    <p>
+      La <strong>capa de contexto</strong> es donde vive el conocimiento operativo. No es un system prompt genérico. Codifica reglas de dominio específicas: cómo las facilidades de titulización afectan al timing del cash-in, por qué los patrones de cobro en UK y España difieren estructuralmente, qué significa un "pago parcial" en la práctica versus la teoría. Dediqué más tiempo a escribir este contexto que a cualquier otra parte del sistema. Es el equivalente a contratar a un analista y darle un mes de onboarding.
+    </p>
+
+    <h2>Decisión de diseño 1: outputs estructurados sobre texto libre</h2>
+    <p>
+      Mi primera iteración dejaba a Claude generar análisis en texto libre. "Basándonos en los datos, los cobros en España parecen estar disminuyendo..." El output era elocuente e inútil. Un CFO no quiere prosa. Quiere un número, un intervalo de confianza y una explicación de una línea sobre qué ha cambiado.
+    </p>
+    <p>
+      Rediseñé la capa de output para forzar respuestas estructuradas. Cada análisis produce un objeto JSON con campos específicos: valor de previsión, nivel de confianza (0-100), varianza respecto a la previsión anterior, tres principales drivers de cambio, y una acción recomendada. La explicación en texto libre pasó a ser contexto opcional, no el output principal.
+    </p>
+
+    <div class="callout">
+      <p><strong>Principio de diseño:</strong> Los LLMs son seductores porque producen outputs legibles por humanos. En contextos operativos, esto es un bug, no un feature. Tu analista de IA debería producir decisiones legibles por máquina que los humanos puedan revisar, no ensayos que los humanos necesiten interpretar.</p>
+    </div>
+
+    <h2>Decisión de diseño 2: verificación de cálculos</h2>
+    <p>
+      Los LLMs no son fiables en aritmética. Esto es bien sabido, pero las implicaciones para el diseño de productos financieros están infravaloradas. Mi analista de tesorería realiza cálculos: medias ponderadas, ajustes estacionales, análisis de varianza. Si alguno de estos es incorrecto, el output es peor que inútil porque parece riguroso.
+    </p>
+    <p>
+      La solución fue separar <em>razonamiento</em> de <em>cálculo</em>. Claude determina <em>qué</em> hay que calcular y <em>por qué</em>, y luego llama a herramientas externas para realizar las operaciones matemáticas reales. La fórmula de media móvil ponderada, el cómputo de índices estacionales, la agregación de previsiones: todo se ejecuta como código determinista, no como inferencia del LLM.
+    </p>
+    <p>
+      El rol de Claude pasa a ser orquestación e interpretación: decidir qué cálculo ejecutar, sobre qué subconjunto de datos, y qué significa el resultado en contexto de negocio. Esto es en lo que los LLMs son realmente buenos. Los números en sí nunca tocan el razonamiento del modelo.
+    </p>
+
+    <h2>Decisión de diseño 3: razonamiento específico por país</h2>
+    <p>
+      Uno de los mayores fallos en mis primeras iteraciones fue tratar a todos los países de forma idéntica. El modelo analizaba las cuentas por cobrar de España usando supuestos que solo eran válidos para UK. Esto producía outputs técnicamente correctos pero operativamente sin sentido.
+    </p>
+    <p>
+      Lo resolví con <strong>ficheros de configuración por país</strong>: documentos estructurados que codifican las características específicas de cada mercado. La configuración de España incluye: plazos de pago típicos (60-90 días), reglas de facilidades de titulización y su impacto en el timing de cash-in, patrones estacionales (agosto muerto, enero lento, recuperación en septiembre). La configuración de UK es completamente diferente: plazos de pago más cortos (30 días), mecánicas de invoice finance, y un parón en diciembre que no afecta a España de la misma forma.
+    </p>
+    <p>
+      Cuando el skill procesa datos de un país específico, carga la configuración correspondiente y ajusta su razonamiento en consecuencia. Esta fue una decisión de diseño de producto, no de prompt engineering. El modelo no necesita "aprender" diferencias entre países a partir de ejemplos. Necesita acceso a conocimiento de dominio estructurado que restrinja su razonamiento de forma apropiada.
+    </p>
+
+    <h2>Qué falló</h2>
+
+    <h3>Fallo 1: detección de anomalías excesivamente confiada</h3>
+    <p>
+      Construí un módulo de detección de anomalías que debía señalar patrones de cobro inusuales. Lo señalaba todo. ¿Un cliente pagando 3 días antes de lo habitual? Anomalía. ¿Una caída estacional que ocurre cada agosto? Anomalía. El modelo no tenía concepto de volatilidad de referencia.
+    </p>
+    <p>
+      La solución fue añadir una capa de contexto estadístico: para cada métrica, el sistema calcula el coeficiente de variación histórico. Las anomalías solo se señalan cuando superan 2 desviaciones estándar respecto a la línea base ajustada estacionalmente y por país. Esto redujo los falsos positivos aproximadamente un 80%.
+    </p>
+
+    <h3>Fallo 2: el problema del "analista servicial"</h3>
+    <p>
+      Claude está entrenado para ser útil. En un contexto de tesorería, esto significa que encontrará una narrativa para explicar cualquier patrón de datos, incluso cuando la respuesta correcta es "los datos son incompletos" o "no hay una tendencia estadísticamente significativa aquí". Mi sistema inicial explicaba con confianza una varianza del 2% que estaba perfectamente dentro del ruido normal.
+    </p>
+    <p>
+      Lo abordé añadiendo <strong>umbrales de materialidad</strong> explícitos a la definición del skill. Las varianzas por debajo de €100K o del 5% se registran pero no se analizan. El sistema tiene instrucciones de distinguir entre "esto es una señal real" y "esto es ruido" antes de generar cualquier explicación. Suena simple. Conseguir que funcionara de forma fiable llevó decenas de iteraciones.
+    </p>
+
+    <h3>Fallo 3: razonamiento temporal</h3>
+    <p>
+      El skill necesitaba razonar sobre el tiempo: "cobros de facturas emitidas en marzo que actualmente están a más de 90 días". Los LLMs son sorprendentemente malos en razonamiento temporal cuando las relaciones son implícitas. Tuve que reestructurar los inputs de datos para que las relaciones temporales fueran explícitas: cada dato etiquetado con fecha de emisión, fecha de vencimiento, bucket de antigüedad actual y fecha de cobro. Un pre-procesamiento que sería trivial para un analista humano resultó ser crítico para un rendimiento fiable de la IA.
+    </p>
+
+    <h2>Lo que aprendí sobre diseño de productos de IA</h2>
+    <p>
+      Construir este sistema me enseñó cinco cosas que no he visto en ningún currículo de AI PM:
+    </p>
+    <ol>
+      <li><strong>La regla 80/20 está invertida.</strong> El 80% de tu tiempo de desarrollo debería ir al 20% de los casos que son excepciones. Los casos estándar son fáciles. Los edge cases son donde tu producto gana confianza o la pierde permanentemente.</li>
+      <li><strong>El contexto de dominio es más importante que la selección de modelo.</strong> La diferencia entre Claude Sonnet y Claude Opus importó mucho menos que la diferencia entre un prompt genérico y un skill bien estructurado con contexto de dominio adecuado. La mayoría de discusiones sobre productos de IA se centran en la variable equivocada.</li>
+      <li><strong>Los raíles deterministas importan.</strong> Cualquier paso que requiera precisión (aritmética, cálculos de fechas, conversión de divisas) debe ejecutarse de forma determinista, no inferirse por el modelo. El LLM orquesta; el código calcula.</li>
+      <li><strong>La calibración de confianza es un feature de producto.</strong> La capacidad del sistema de decir "tengo un 60% de confianza y esta es la razón" es más valiosa que acertar el 90% de las veces sin expresar incertidumbre. Los profesionales de finanzas confían en sistemas que conocen sus propios límites.</li>
+      <li><strong>La velocidad de iteración lo es todo.</strong> Pasé por más de 40 versiones de la definición del skill. Cada iteración estaba informada por datos reales produciendo resultados incorrectos. No puedes diseñar un producto de IA en un documento de especificación. Lo diseñas lanzando, fallando y corrigiendo.</li>
+    </ol>
+
+    <h2>Hacia dónde va esto</h2>
+    <p>
+      El skill de analista de tesorería es un proof of concept de algo mayor: <strong>agentes financieros autónomos que pueden operar a través de funciones de tesorería completas</strong>. Aplicación de pagos, optimización de cobros, previsión de liquidez, monitorización de riesgo de contrapartida: cada uno de estos es un skill que se puede diseñar con el mismo framework. Conectados a través de una capa de orquestación, forman la pila autónoma de tesorería.
+    </p>
+    <p>
+      No estoy construyendo un producto para vender. Estoy construyendo la intuición técnica para diseñar estos sistemas a escala. Cada skill que construyo, cada fallo que depuro, cada principio de diseño que extraigo: es preparación para el momento en que una empresa con más de €1.000M en cuentas por cobrar decida que quiere que su función de tesorería se gestione sola.
+    </p>
+    <p>
+      Ese momento llega más rápido de lo que la mayoría piensa.
+    </p>
+  </div>
+
+  <div class="article-cta">
+    <a href="/es/#work">Ver mi trabajo &rarr;</a>
+    <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener">Agendar una conversación &rarr;</a>
+  </div>
+
+  <div class="article-footer">
+    <div class="article-author">
+      <div class="author-info">
+        <div class="author-name">Rafael Pardo</div>
+        <div class="author-bio">AI Product Manager. Construí la infraestructura de tesorería de un unicornio de €2.300M. Ahora diseño agentes de IA que la hacen autónoma. <a href="mailto:rafael@rpardo.ai">rafael@rpardo.ai</a> · <a href="https://www.linkedin.com/in/rpardo-ai/" target="_blank">LinkedIn</a></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="footer-logo">rpardo.ai</div>
+  <div class="footer-copy">© 2026 Rafael Pardo. Todos los derechos reservados.</div>
+</footer>
+
+</body>
+</html>

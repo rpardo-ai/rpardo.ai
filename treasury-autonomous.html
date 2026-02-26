@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Treasury Will Be the First Back-Office Function to Go Fully Autonomous / Rafael Pardo</title>
+<link rel="canonical" href="https://rpardo.ai/treasury-autonomous.html">
+<link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-autonomous.html">
+<link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-autonomous.html">
+<link rel="alternate" hreflang="x-default" href="https://rpardo.ai/treasury-autonomous.html">
+<meta name="description" content="Every CFO talks about AI transformation. None of them start with treasury. That's a mistake. Here's why treasury will be the first function to go fully autonomous.">
+<meta property="og:title" content="Why Treasury Will Be the First Back-Office Function to Go Fully Autonomous">
+<meta property="og:description" content="Every CFO talks about AI transformation. None of them start with treasury. That's a mistake.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rpardo.ai/treasury-autonomous.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230E1520'/><text x='50' y='68' font-family='monospace' font-size='52' font-weight='700' fill='%238AACC6' text-anchor='middle'>R</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #020202;
+    --black: #080808;
+    --deep: #0E1520;
+    --accent: #5A7A9B;
+    --accent-hi: #8AACC6;
+    --steel: #525250;
+    --ash: #6E6B64;
+    --warm: #96918A;
+    --silver: #BAB6AE;
+    --cream: #F0EDE6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px;
+  }
+
+  /* ═══════ NAV ═══════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(2,2,2,0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(90,122,155,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--cream);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-back {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--warm);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .nav-back:hover { color: var(--cream); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-lang {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 1.5px; text-decoration: none; display: flex;
+    align-items: center; gap: 6px;
+  }
+  .nav-lang span { padding: 3px 7px; border-radius: 3px; transition: color 0.3s ease, background 0.3s ease; }
+  .nav-lang .active { color: var(--cream); background: rgba(90,122,155,0.15); }
+  .nav-lang .inactive { color: var(--ash); cursor: pointer; }
+  .nav-lang .inactive:hover { color: var(--cream); }
+  .nav-lang-sep { color: var(--steel); font-weight: 300; user-select: none; }
+
+  /* ═══════ ARTICLE ═══════ */
+  .article-header {
+    padding: 140px 40px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .article-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .article-title {
+    font-family: 'Newsreader', serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+
+  .article-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--warm);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .article-info {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--ash);
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(90,122,155,0.08);
+  }
+
+  .article-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 40px 100px;
+  }
+
+  .article-body p {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.9;
+    margin-bottom: 24px;
+  }
+
+  .article-body strong {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .article-body em {
+    color: var(--accent-hi);
+    font-style: italic;
+  }
+
+  .article-body h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--cream);
+    margin: 48px 0 20px;
+  }
+
+  .article-body h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+    margin: 36px 0 12px;
+  }
+
+  .article-body blockquote {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 24px;
+    margin: 32px 0;
+  }
+
+  .article-body blockquote p {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-pale, var(--accent-hi));
+    line-height: 1.7;
+  }
+
+  .article-body ul, .article-body ol {
+    margin: 0 0 24px 20px;
+    color: var(--silver);
+  }
+
+  .article-body li {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+
+  .callout {
+    background: var(--deep);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    margin: 36px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .callout p {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ═══════ FOOTER ═══════ */
+  .article-footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+    border-top: 1px solid rgba(90,122,155,0.08);
+    padding-top: 40px;
+  }
+
+  .article-author {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .author-info {
+    flex: 1;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .author-bio {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--warm);
+    line-height: 1.6;
+  }
+
+  .author-bio a {
+    color: var(--accent-hi);
+    text-decoration: none;
+  }
+
+  .author-bio a:hover { color: var(--cream); }
+
+  footer {
+    background: var(--void);
+    padding: 48px 40px;
+    border-top: 1px solid rgba(90,122,155,0.06);
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 12px;
+  }
+
+  .footer-copy { font-size: 11px; color: var(--steel); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .article-header { padding: 100px 24px 40px; }
+    .article-title { font-size: 28px; }
+    .article-body { padding: 32px 24px 80px; }
+    .article-footer { padding: 0 24px 60px; padding-top: 32px; }
+  }
+
+  .article-cta { max-width: 720px; margin: 0 auto; padding: 0 40px 48px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .article-cta a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-hi); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(90,122,155,0.3); border-radius: 2px; transition: all 0.3s; }
+  .article-cta a:hover { background: rgba(90,122,155,0.1); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">rpardo.ai</a>
+  <div class="nav-right">
+    <a href="/#insights" class="nav-back">← Back to Insights</a>
+    <div class="nav-lang">
+      <span class="active">EN</span>
+      <span class="nav-lang-sep">/</span>
+      <a href="/es/treasury-autonomous.html" style="text-decoration:none"><span class="inactive">ES</span></a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="article-header">
+    <div class="article-meta">Thesis / Treasury + AI</div>
+    <h1 class="article-title">Why Treasury Will Be the First Back-Office Function to Go Fully Autonomous</h1>
+    <p class="article-subtitle">Every CFO talks about AI transformation. None of them start with treasury. That's a mistake.</p>
+    <div class="article-info">Rafael Pardo · 9 min read · 14 February 2026</div>
+  </div>
+
+  <div class="article-body">
+    <p>
+      Every CFO I've spoken to in the last year has an AI strategy. Or at least a slide deck that says they do. The typical plan starts with FP&amp;A, moves to compliance, maybe touches procurement. Treasury barely gets a mention.
+    </p>
+    <p>
+      This is backwards. After seven years running treasury operations across 10 European markets at a €2.3B company, managing a €2B receivables portfolio, and spending the last year building AI agents for financial operations, I'm convinced that <strong>treasury will be the first back-office function to go fully autonomous</strong>. Not partially automated. Not "AI-assisted." Autonomous.
+    </p>
+    <p>
+      Here's why.
+    </p>
+
+    <h2>The Autonomy Trifecta</h2>
+    <p>
+      For any function to go fully autonomous, it needs three properties: the work must be <strong>repetitive</strong>, <strong>rule-based</strong>, and <strong>high-stakes enough to justify the investment</strong>. Treasury is the only back-office function that scores perfectly on all three.
+    </p>
+
+    <h3>Repetitive at industrial scale</h3>
+    <p>
+      Treasury operations are overwhelmingly pattern-matching. Cash application: match incoming payments to outstanding invoices. Collections: identify overdue accounts, determine the right communication cadence, send reminders. Cash forecasting: aggregate historical collection behaviours, apply them to current receivables, predict future cash positions. I personally managed a process where we tracked collections cohorts month by month, calculating what percentage of each invoice vintage was collected at 30, 60, 90, 120, and 150+ days. Every single month. Across 10 countries. The same structure, the same logic, the same patterns.
+    </p>
+
+    <h3>Rule-based with definable exceptions</h3>
+    <p>
+      This is the critical distinction that most AI strategists miss. Treasury isn't just repetitive; it follows explicit rules with a <em>finite set of exceptions</em>. When you receive a payment that doesn't match an invoice exactly, there are perhaps 15 common reasons: partial payments, early payment discounts, currency rounding, consolidated payments across multiple invoices, tax withholdings, bank fees deducted at source. I've seen all of them. They look messy at first, but they're classifiable. And once classified, the resolution follows a predictable path.
+    </p>
+    <p>
+      Contrast this with FP&amp;A, where "analyse why revenue is down 12% in Germany" requires contextual business judgment that changes every quarter. Or with compliance, where regulatory interpretation requires legal nuance. Treasury exceptions are <em>structured</em> exceptions. That's exactly what AI agents handle well.
+    </p>
+
+    <h3>High-stakes economics</h3>
+    <p>
+      A single day of improvement in Days Sales Outstanding across a €2B receivables portfolio is worth roughly €5.5M in freed working capital. When I reduced overdue debt from €100M to €15M, the impact on the company's credit facilities, securitisation capacity, and investor narrative was immediate and material. Treasury automation doesn't just save FTE costs; it releases capital that was previously trapped in operational inefficiency. That's a CFO's dream ROI case.
+    </p>
+
+    <h2>Why Current "Solutions" Aren't Enough</h2>
+    <p>
+      The enterprise treasury software market (HighRadius, Kyriba, Coupa Treasury) has existed for years. These platforms are good at what they do: workflow automation, straight-through processing for clean matches, dashboard reporting. But they have a fundamental limitation: <strong>they automate the easy 70% and leave the hard 30% to humans</strong>.
+    </p>
+    <p>
+      The hard 30% is where most of the value is. It's the partial payment from a client who paid three invoices with one transfer and deducted a credit note you haven't processed yet. It's the payment that arrives in a different currency than expected because the client's treasury team decided to net across entities. It's the €25M discrepancy you discover when your forecast model assumes a simple average of historical collection behaviours but ignores seasonality and partial payment patterns.
+    </p>
+    <p>
+      I found that exact discrepancy. The root cause was threefold: the model was forecasting collections rather than actual cash-in, target behaviours weren't seasonally adjusted, and partial payments were falling through the cracks. Traditional software would never have caught it because it wasn't a data quality issue. It was a <em>methodology</em> issue. Fixing it required understanding how weighted moving averages with recency bias outperform simple averages for collection behaviour prediction, and why seasonal indices need to be calculated per bucket, not globally.
+    </p>
+    <p>
+      This is exactly the kind of problem where an AI agent, properly designed, outperforms both legacy software and manual processes.
+    </p>
+
+    <h2>The Autonomous Treasury Stack</h2>
+    <p>
+      Based on what I've built and what I've seen working, the autonomous treasury stack has three layers:
+    </p>
+
+    <div class="callout">
+      <p><strong>Layer 1: Enterprise platform</strong> for straight-through processing, bank connectivity, and core workflow management. This is your HighRadius or equivalent. It handles the clean 70%.</p>
+      <p><strong>Layer 2: AI agents</strong> for the exception handling, pattern recognition, and decision-making that enterprise platforms can't touch. These agents use tool calling, multi-step reasoning, and access to contextual data to resolve the hard 30%.</p>
+      <p><strong>Layer 3: Orchestration</strong> that routes work between Layer 1 and Layer 2, escalates edge cases to humans, and continuously learns from resolutions to push more volume into straight-through processing.</p>
+    </div>
+
+    <p>
+      The key insight is that Layer 2 doesn't replace Layer 1. It <em>complements</em> it. Enterprise platforms are excellent at structured automation; AI agents are excellent at unstructured reasoning. The combination is what gets you from 70% automation to 95%+.
+    </p>
+
+    <h2>Why Operators Will Build This (Not Technologists)</h2>
+    <p>
+      The biggest risk in autonomous treasury isn't the technology. It's building the wrong thing. I've watched technologists design "intelligent" collections systems that send automated dunning emails based on days overdue. Anyone who has actually called a debtor knows that timing a collections call is about understanding the client's payment cycle, their internal approval process, their relationship with your sales team, and whether they're consolidating invoices this month. Days overdue is one input among twenty.
+    </p>
+    <p>
+      The best AI products in treasury will be built by people who have <strong>sat in the operations chair</strong>. Who have reconciled cash at 2am before a board meeting. Who have explained to a CFO why the forecast was off by €25M. Who know that the real bottleneck in collections isn't sending emails; it's knowing <em>which</em> emails to send, to <em>whom</em>, and <em>when</em>.
+    </p>
+    <p>
+      That operational intuition can't be learned from a product requirements document. It can't be specified in a user story. It lives in the judgment of people who've done the work.
+    </p>
+
+    <h2>Timeline: Faster Than You Think</h2>
+    <p>
+      The technology for autonomous treasury exists today. Large language models can reason about payment discrepancies. Tool-calling agents can query ERP systems, match invoices, and draft resolution emails. The cost of running these agents is dropping quarterly.
+    </p>
+    <p>
+      What's missing isn't capability. It's <strong>product design</strong>: someone who understands both the operational reality and the technical possibility, who can design the right level of autonomy for each sub-process, who knows where to keep humans in the loop and where to let the agents run.
+    </p>
+    <p>
+      My estimate: within 18 months, the first companies will have 90%+ autonomous treasury operations for standard receivables management. Within 36 months, the competitive advantage of having a fully autonomous treasury function will be so clear that every company managing €500M+ in receivables will be building or buying one.
+    </p>
+    <p>
+      The question isn't whether treasury goes autonomous. It's who builds it first.
+    </p>
+  </div>
+
+  <div class="article-cta">
+    <a href="/#work">See my work &rarr;</a>
+    <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener">Schedule a conversation &rarr;</a>
+  </div>
+
+  <div class="article-footer">
+    <div class="article-author">
+      <div class="author-info">
+        <div class="author-name">Rafael Pardo</div>
+        <div class="author-bio">AI Product Manager. Built the treasury infrastructure at a €2.3B unicorn. Now I design AI agents that make it autonomous. <a href="mailto:rafael@rpardo.ai">rafael@rpardo.ai</a> · <a href="https://www.linkedin.com/in/rpardo-ai/" target="_blank">LinkedIn</a></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="footer-logo">rpardo.ai</div>
+  <div class="footer-copy">© 2026 Rafael Pardo. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

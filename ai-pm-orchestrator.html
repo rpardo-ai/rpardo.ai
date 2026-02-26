@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Product Manager Is Dead. Long Live the AI Orchestrator. / Rafael Pardo</title>
+<link rel="canonical" href="https://rpardo.ai/ai-pm-orchestrator.html">
+<link rel="alternate" hreflang="en" href="https://rpardo.ai/ai-pm-orchestrator.html">
+<link rel="alternate" hreflang="es" href="https://rpardo.ai/es/ai-pm-orchestrator.html">
+<link rel="alternate" hreflang="x-default" href="https://rpardo.ai/ai-pm-orchestrator.html">
+<meta name="description" content="The PM role isn't evolving. It's mutating. Feature roadmaps become behaviour roadmaps. User stories become agent stories. QA becomes evaluation. The PMs who survive this shift will be the ones who understand systems, not screens.">
+<meta property="og:title" content="The AI Product Manager Is Dead. Long Live the AI Orchestrator.">
+<meta property="og:description" content="Feature roadmaps become behaviour roadmaps. User stories become agent stories. The PM role is mutating.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rpardo.ai/ai-pm-orchestrator.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230E1520'/><text x='50' y='68' font-family='monospace' font-size='52' font-weight='700' fill='%238AACC6' text-anchor='middle'>R</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #020202; --black: #080808; --deep: #0E1520;
+    --accent: #5A7A9B; --accent-hi: #8AACC6;
+    --steel: #525250; --ash: #6E6B64; --warm: #96918A;
+    --silver: #BAB6AE; --cream: #F0EDE6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none; opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat; background-size: 180px;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 48px; height: 64px; display: flex;
+    align-items: center; justify-content: space-between;
+    background: rgba(2,2,2,0.85); backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(90,122,155,0.1);
+  }
+  .nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 3px; color: var(--cream); text-decoration: none; text-transform: uppercase; }
+  .nav-back { font-size: 12px; font-weight: 400; letter-spacing: 1px; color: var(--warm); text-decoration: none; transition: color 0.3s ease; }
+  .nav-back:hover { color: var(--cream); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-lang { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; display: flex; align-items: center; gap: 6px; }
+  .nav-lang span { padding: 3px 7px; border-radius: 3px; transition: color 0.3s ease, background 0.3s ease; }
+  .nav-lang .active { color: var(--cream); background: rgba(90,122,155,0.15); }
+  .nav-lang .inactive { color: var(--ash); cursor: pointer; }
+  .nav-lang .inactive:hover { color: var(--cream); }
+  .nav-lang-sep { color: var(--steel); font-weight: 300; user-select: none; }
+  .article-header { padding: 140px 40px 60px; max-width: 720px; margin: 0 auto; }
+  .article-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .article-title { font-family: 'Newsreader', serif; font-size: 38px; font-weight: 300; line-height: 1.3; margin-bottom: 20px; }
+  .article-subtitle { font-size: 16px; font-weight: 300; color: var(--warm); line-height: 1.7; margin-bottom: 32px; }
+  .article-info { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--ash); padding-bottom: 40px; border-bottom: 1px solid rgba(90,122,155,0.08); }
+  .article-body { max-width: 720px; margin: 0 auto; padding: 48px 40px 100px; }
+  .article-body p { font-size: 16px; font-weight: 300; color: var(--silver); line-height: 1.9; margin-bottom: 24px; }
+  .article-body strong { color: var(--cream); font-weight: 500; }
+  .article-body em { color: var(--accent-hi); font-style: italic; }
+  .article-body h2 { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 400; color: var(--cream); margin: 48px 0 20px; }
+  .article-body h3 { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600; color: var(--cream); letter-spacing: 0.5px; margin: 36px 0 12px; }
+  .article-body blockquote { border-left: 2px solid var(--accent); padding: 4px 0 4px 24px; margin: 32px 0; }
+  .article-body blockquote p { font-family: 'Newsreader', serif; font-size: 18px; font-style: italic; color: var(--accent-hi); line-height: 1.7; }
+  .article-body ul, .article-body ol { margin: 0 0 24px 20px; color: var(--silver); }
+  .article-body li { font-size: 16px; font-weight: 300; line-height: 1.8; margin-bottom: 8px; }
+  .callout { background: var(--deep); border-left: 3px solid var(--accent); padding: 24px 28px; margin: 36px 0; border-radius: 0 6px 6px 0; }
+  .callout p { margin-bottom: 8px; font-size: 14px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .article-cta { max-width: 720px; margin: 0 auto; padding: 0 40px 48px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .article-cta a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-hi); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(90,122,155,0.3); border-radius: 2px; transition: all 0.3s; }
+  .article-cta a:hover { background: rgba(90,122,155,0.1); border-color: var(--accent); }
+  .article-footer { max-width: 720px; margin: 0 auto; padding: 0 40px 80px; border-top: 1px solid rgba(90,122,155,0.08); padding-top: 40px; }
+  .author-info { flex: 1; }
+  .author-name { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 4px; }
+  .author-bio { font-size: 13px; font-weight: 300; color: var(--warm); line-height: 1.6; }
+  .author-bio a { color: var(--accent-hi); text-decoration: none; }
+  .author-bio a:hover { color: var(--cream); }
+  footer { background: var(--void); padding: 48px 40px; border-top: 1px solid rgba(90,122,155,0.06); text-align: center; }
+  .footer-logo { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--ash); margin-bottom: 12px; }
+  .footer-copy { font-size: 11px; color: var(--steel); }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .article-header { padding: 100px 24px 40px; }
+    .article-title { font-size: 28px; }
+    .article-body { padding: 32px 24px 80px; }
+    .article-cta { padding: 0 24px 48px; }
+    .article-footer { padding: 0 24px 60px; padding-top: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">rpardo.ai</a>
+  <div class="nav-right">
+    <a href="/#insights" class="nav-back">&larr; Back to Insights</a>
+    <div class="nav-lang">
+      <span class="active">EN</span>
+      <span class="nav-lang-sep">/</span>
+      <a href="/es/ai-pm-orchestrator.html" style="text-decoration:none"><span class="inactive">ES</span></a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="article-header">
+    <div class="article-meta">Framework / AI Product Management</div>
+    <h1 class="article-title">The AI Product Manager Is Dead. Long Live the AI Orchestrator.</h1>
+    <p class="article-subtitle">Feature roadmaps become behaviour roadmaps. User stories become agent stories. The PM role isn't evolving. It's mutating.</p>
+    <div class="article-info">Rafael Pardo · 8 min read · 26 February 2026</div>
+  </div>
+
+  <div class="article-body">
+    <p>
+      The product manager role, as we've known it for the past decade, was designed for a world of deterministic software. You wrote specs. Engineers built features. QA checked that buttons did what buttons should do. You shipped, measured, iterated. The feedback loop was clean: users click things, you watch what they click, you build more things to click.
+    </p>
+    <p>
+      That world is ending. Not slowly. Quickly.
+    </p>
+    <p>
+      When your product is an AI agent that makes autonomous decisions, everything changes. The agent doesn't have buttons. It has behaviours. It doesn't follow a user flow. It reasons, acts, and sometimes hallucinates. You can't QA a behaviour the way you QA a feature, because the same input might produce different outputs depending on context, confidence, and the state of every other agent in the system.
+    </p>
+    <p>
+      The PMs who survive this shift won't be the ones who learn to prompt better. They'll be the ones who learn to think in systems, not screens.
+    </p>
+
+    <h2>Five Mutations in the PM Role</h2>
+
+    <h3>1. Feature roadmaps become behaviour roadmaps</h3>
+    <p>
+      A traditional PM roadmap lists features: "Q2: Add bulk payment export. Q3: Dashboard filtering. Q4: Mobile app." Each feature is a discrete unit with a clear definition of done.
+    </p>
+    <p>
+      An AI PM roadmap lists behaviours: "Q2: Agent handles partial payment matching with >90% accuracy. Q3: Agent autonomously prioritises collections across three countries. Q4: Agent adjusts cash forecasts in response to market events without human approval for deviations under 5%."
+    </p>
+    <p>
+      The difference is fundamental. A feature is shipped or not. A behaviour exists on a spectrum. Your collections agent doesn't "launch" on a specific date. It gradually earns the right to make increasingly consequential decisions, as it demonstrates competence in each domain. The PM's job isn't to decide when to ship. It's to define the competence thresholds that unlock each level of autonomy.
+    </p>
+
+    <h3>2. User stories become agent stories</h3>
+    <p>
+      "As a treasury analyst, I want to see a daily cash position report so I can make funding decisions." That's a user story. It assumes a human in the loop, making the decision. The software serves information.
+    </p>
+    <p>
+      Agent stories are different: "As a cash forecasting agent, I ingest daily bank balances, apply weighted moving averages with recency decay, adjust for seasonal patterns by collection bucket, and produce a 30-day forecast. When my forecast deviates more than 10% from the previous day, I flag the change for treasury review with the top three contributing factors. When deviation is under 10%, I update the forecast autonomously."
+    </p>
+    <p>
+      Agent stories specify behaviour, confidence requirements, escalation triggers, and the context the agent needs to make decisions. They're closer to system specifications than user narratives. And writing them well requires understanding both the domain (what constitutes a meaningful deviation in cash forecasting?) and the technology (how confident can this agent actually be, given the quality and volume of training data?).
+    </p>
+
+    <h3>3. QA becomes evaluation</h3>
+    <p>
+      In traditional software, QA is binary. The button works or it doesn't. The calculation is correct or incorrect. You can write automated tests that verify deterministic behaviour.
+    </p>
+    <p>
+      With AI agents, you need evaluation frameworks. Not "does the agent produce the right answer" but "does the agent produce answers within an acceptable range, with appropriate confidence, and does it escalate correctly when it's uncertain?" Evaluation is statistical, not deterministic. You're testing distributions, not outputs.
+    </p>
+    <p>
+      When I built a treasury analyst in Claude, the evaluation wasn't "does the forecast match reality?" It was: does the agent correctly identify which collection buckets have the highest uncertainty? Does it adjust its confidence when data quality degrades? Does it flag anomalies that a human would flag? Does it avoid confidently asserting things it shouldn't? The evaluation framework became the most important design artefact, more important than the agent's prompts or tools.
+    </p>
+
+    <h3>4. Stakeholder management becomes trust management</h3>
+    <p>
+      A traditional PM manages stakeholders by setting expectations, negotiating priorities, and communicating progress. The stakeholders are humans who understand (roughly) what software does.
+    </p>
+    <p>
+      An AI PM manages trust. Your stakeholders are finance directors who've been burned by "AI" tools that turned out to be glorified dashboards. They're treasury teams who've been told automation would "free them up" and instead created more work validating AI outputs. They're compliance officers who can't explain to regulators how a model made a decision.
+    </p>
+    <p>
+      Trust management isn't about demos. It's about transparency, graduated rollouts, and giving humans the ability to verify and override. When I designed the AI governance framework for our treasury platform, the change management strategy included an early warning system that monitored adoption signals: login frequency, feature usage, and critically, whether teams were maintaining shadow spreadsheets as a parallel system. Shadow processes are the clearest signal that users don't trust the AI. Ignoring that signal is how implementations fail.
+    </p>
+
+    <h3>5. The PM becomes the system designer</h3>
+    <p>
+      Perhaps the most profound shift: the PM's primary design object is no longer the interface. It's the system.
+    </p>
+    <p>
+      In a multi-agent product, the PM defines how agents interact, what state they share, how errors propagate, what circuit breakers exist, and how the system degrades gracefully when an agent fails. The UI is almost an afterthought: it's the monitoring layer on top of a system that operates mostly autonomously.
+    </p>
+    <p>
+      This is why operators have an advantage. If you've lived inside the system you're automating, you already have the mental model of how the pieces connect, where the failure modes are, and what "working correctly" looks like in practice, not in theory. You don't need to interview users to understand the workflow. You've done the workflow, at 2am, under pressure, with real money at stake.
+    </p>
+
+    <h2>What the Transition Looks Like</h2>
+    <p>
+      If you're a PM making this transition, here's what I've learned:
+    </p>
+    <p>
+      <strong>Start with evaluation, not features.</strong> Before you build anything, define what "good" looks like for the agent. What accuracy threshold matters? What confidence level triggers escalation? What's the cost of a false positive vs. a false negative in your specific domain? If you can't answer these questions, you're not ready to build.
+    </p>
+    <p>
+      <strong>Design the governance before the agent.</strong> Who approves what? At what confidence level? With what audit trail? These aren't afterthoughts. They're the architecture. In regulated industries, the governance framework is the product more than the AI model.
+    </p>
+    <p>
+      <strong>Learn to think in systems, not flows.</strong> User flows are linear: step 1, step 2, step 3. Systems are networked: Agent A affects Agent B which affects Agent C which feeds back to Agent A. If you can't draw the feedback loops in your system, you don't understand your product yet.
+    </p>
+    <p>
+      <strong>Get operational experience.</strong> The most dangerous AI PM is one who's never operated the system they're automating. They'll design for the happy path because they've never seen the unhappy one. They'll set confidence thresholds based on benchmarks instead of business impact. They'll build demos that work and products that don't.
+    </p>
+
+    <blockquote>
+      <p>The AI product manager role isn't disappearing. It's becoming something harder and more valuable: the person who designs how intelligent systems behave in the real world, where the real world is messy, regulated, and unforgiving.</p>
+    </blockquote>
+
+    <p>
+      The PMs who thrive in this new reality will combine three capabilities that are rarely found together: deep domain expertise (ideally from operating the systems they're now automating), technical fluency in AI architectures (not just prompt engineering, but system design, evaluation, and governance), and the product judgment to know where to draw the line between autonomy and human oversight.
+    </p>
+    <p>
+      If that sounds like a small intersection, it is. And that's exactly why it's a career opportunity.
+    </p>
+  </div>
+
+  <div class="article-cta">
+    <a href="/#work">See my work &rarr;</a>
+    <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener">Schedule a conversation &rarr;</a>
+  </div>
+
+  <div class="article-footer">
+    <div class="article-author">
+      <div class="author-info">
+        <div class="author-name">Rafael Pardo</div>
+        <div class="author-bio">AI Product Manager. Built the treasury infrastructure at a €2.3B unicorn. Now I design AI agents that make it autonomous. <a href="mailto:rafael@rpardo.ai">rafael@rpardo.ai</a> · <a href="https://www.linkedin.com/in/rpardo-ai/" target="_blank">LinkedIn</a></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="footer-logo">rpardo.ai</div>
+  <div class="footer-copy">&copy; 2026 Rafael Pardo. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

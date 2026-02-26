@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://rpardo.ai/</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/treasury-autonomous.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-autonomous.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-autonomous.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/operators-edge.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/operators-edge.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/operators-edge.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/treasury-analyst-claude.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-analyst-claude.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-analyst-claude.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/treasury-autonomous.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-autonomous.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-autonomous.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/operators-edge.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/operators-edge.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/operators-edge.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/treasury-analyst-claude.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/treasury-analyst-claude.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/treasury-analyst-claude.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/product-strategy.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/product-strategy.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/product-strategy.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/multi-agent-failure.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/multi-agent-failure.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/multi-agent-failure.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/ai-pm-orchestrator.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/ai-pm-orchestrator.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/ai-pm-orchestrator.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/multi-agent-failure.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/multi-agent-failure.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/multi-agent-failure.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/ai-pm-orchestrator.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/ai-pm-orchestrator.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/ai-pm-orchestrator.html" />
+  </url>
+  <url>
+    <loc>https://rpardo.ai/es/product-strategy.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rpardo.ai/product-strategy.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rpardo.ai/es/product-strategy.html" />
+  </url>
+</urlset>

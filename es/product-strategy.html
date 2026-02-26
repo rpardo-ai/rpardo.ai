@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma Financiera Autónoma: Estrategia de Producto / Rafael Pardo</title>
+<link rel="canonical" href="https://rpardo.ai/es/product-strategy.html">
+<link rel="alternate" hreflang="en" href="https://rpardo.ai/product-strategy.html">
+<link rel="alternate" hreflang="es" href="https://rpardo.ai/es/product-strategy.html">
+<link rel="alternate" hreflang="x-default" href="https://rpardo.ai/product-strategy.html">
+<meta name="description" content="Estrategia de producto de 22 páginas para transformar operaciones de tesorería en un sistema autónomo. Arquitectura de tres capas, gobernanza AI y despliegue por fases en 9 meses.">
+<meta property="og:title" content="Plataforma Financiera Autónoma: Estrategia de Producto">
+<meta property="og:description" content="Estrategia de producto de 22 páginas para transformar operaciones de tesorería en un sistema autónomo.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rpardo.ai/es/product-strategy.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230E1520'/><text x='50' y='68' font-family='monospace' font-size='52' font-weight='700' fill='%238AACC6' text-anchor='middle'>R</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #020202;
+    --black: #080808;
+    --deep: #0E1520;
+    --accent: #5A7A9B;
+    --accent-hi: #8AACC6;
+    --steel: #525250;
+    --ash: #6E6B64;
+    --warm: #96918A;
+    --silver: #BAB6AE;
+    --cream: #F0EDE6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px;
+  }
+
+  /* ═══════ NAV ═══════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(2,2,2,0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(90,122,155,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--cream);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-back {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--warm);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-back:hover { color: var(--cream); }
+
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .nav-lang .active { color: var(--cream); font-weight: 600; }
+  .nav-lang .inactive { color: var(--steel); transition: color 0.3s; cursor: pointer; }
+  .nav-lang .inactive:hover { color: var(--cream); }
+  .nav-lang-sep { color: var(--steel); }
+
+  /* ═══════ HEADER ═══════ */
+  .cs-header {
+    padding: 120px 48px 48px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .cs-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .cs-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 300;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .cs-subtitle {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--silver);
+    margin-bottom: 24px;
+  }
+
+  .cs-info {
+    font-size: 13px;
+    color: var(--warm);
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══════ STATS BAR ═══════ */
+  .cs-stats {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(90,122,155,0.1);
+    border-top: 1px solid rgba(90,122,155,0.1);
+    border-bottom: 1px solid rgba(90,122,155,0.1);
+  }
+
+  .cs-stat {
+    padding: 24px 0;
+    text-align: center;
+    background: var(--black);
+  }
+
+  .cs-stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent-hi);
+    margin-bottom: 4px;
+  }
+
+  .cs-stat-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  /* ═══════ CONTENT ═══════ */
+  .cs-body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 56px 48px 40px;
+  }
+
+  .cs-body p {
+    font-family: 'Newsreader', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--silver);
+    margin-bottom: 20px;
+  }
+
+  .cs-body p strong {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .cs-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    margin-top: 56px;
+  }
+
+  .cs-body h2 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--cream);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  /* ═══════ EXPANDABLE SECTIONS ═══════ */
+  .cs-expand {
+    border-top: 1px solid rgba(90,122,155,0.1);
+    margin-top: 12px;
+  }
+
+  .cs-expand-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    user-select: none;
+  }
+
+  .cs-expand-trigger:hover { opacity: 0.8; }
+
+  .cs-expand-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    color: var(--cream);
+    letter-spacing: 0.3px;
+  }
+
+  .cs-expand-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--accent);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .cs-expand.open .cs-expand-icon {
+    transform: rotate(45deg);
+  }
+
+  .cs-expand-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cs-expand.open .cs-expand-content {
+    max-height: 2000px;
+  }
+
+  .cs-expand-inner {
+    padding-bottom: 28px;
+  }
+
+  .cs-expand-inner p {
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--silver);
+    margin-bottom: 12px;
+  }
+
+  .cs-expand-inner p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ═══════ ARCHITECTURE DIAGRAM ═══════ */
+  .cs-diagram {
+    max-width: 900px;
+    margin: 40px auto 24px;
+    padding: 0 48px;
+  }
+
+  .cs-diagram img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid rgba(90,122,155,0.1);
+  }
+
+  .cs-diagram-caption {
+    font-size: 12px;
+    color: var(--ash);
+    text-align: center;
+    margin-top: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ═══════ TABLE ═══════ */
+  .cs-table-wrap {
+    margin: 20px 0 28px;
+    overflow-x: auto;
+  }
+
+  .cs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .cs-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(90,122,155,0.2);
+    font-weight: 500;
+  }
+
+  .cs-table td {
+    padding: 12px 16px;
+    color: var(--silver);
+    border-bottom: 1px solid rgba(90,122,155,0.06);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .cs-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ═══════ CALLOUT ═══════ */
+  .cs-callout {
+    border-left: 2px solid var(--accent);
+    padding: 20px 24px;
+    margin: 28px 0;
+    background: rgba(90,122,155,0.04);
+  }
+
+  .cs-callout p {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .cs-callout p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* ═══════ DOWNLOAD CTA ═══════ */
+  .cs-download {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 32px;
+    margin: 48px 0;
+    border: 1px solid rgba(90,122,155,0.15);
+    border-radius: 4px;
+    background: rgba(14,21,32,0.5);
+    transition: border-color 0.3s;
+  }
+
+  .cs-download:hover {
+    border-color: rgba(90,122,155,0.35);
+  }
+
+  .cs-download-text h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .cs-download-text p {
+    font-size: 13px !important;
+    color: var(--warm) !important;
+    margin-bottom: 0 !important;
+  }
+
+  .cs-download-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-hi);
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid rgba(90,122,155,0.3);
+    border-radius: 2px;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .cs-download-btn:hover {
+    background: rgba(90,122,155,0.1);
+    border-color: var(--accent);
+  }
+
+  /* ═══════ REFLECTION ═══════ */
+  .cs-reflection {
+    border-top: 1px solid rgba(90,122,155,0.1);
+    padding-top: 48px;
+    margin-top: 48px;
+  }
+
+  .cs-reflection p {
+    font-family: 'Newsreader', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--silver);
+  }
+
+  .cs-reflection em {
+    font-style: italic;
+    color: var(--cream);
+  }
+
+  .cs-closing {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--cream);
+    margin-top: 32px;
+    margin-bottom: 0 !important;
+  }
+
+  /* ═══════ FOOTER ═══════ */
+  .article-footer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 48px 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(90,122,155,0.08);
+  }
+
+  .author-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .author-bio {
+    font-size: 14px;
+    color: var(--warm);
+    line-height: 1.6;
+  }
+
+  .author-bio a {
+    color: var(--accent-hi);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .author-bio a:hover { color: var(--cream); }
+
+  footer {
+    background: var(--black);
+    padding: 48px 40px;
+    border-top: 1px solid rgba(90,122,155,0.06);
+  }
+
+  .footer-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--warm);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--steel);
+  }
+
+  /* ═══════ RESPONSIVE ═══════ */
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .cs-header { padding: 100px 24px 40px; }
+    .cs-title { font-size: 28px; }
+    .cs-subtitle { font-size: 16px; }
+    .cs-stats { grid-template-columns: repeat(2, 1fr); padding: 0 24px; }
+    .cs-body { padding: 40px 24px 32px; }
+    .cs-diagram { padding: 0 24px; }
+    .cs-download { flex-direction: column; gap: 16px; align-items: flex-start; padding: 24px; }
+    .article-footer { padding: 0 24px 48px; padding-top: 32px; }
+  }
+
+  .article-cta { max-width: 720px; margin: 0 auto; padding: 0 40px 48px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .article-cta a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-hi); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(90,122,155,0.3); border-radius: 2px; transition: all 0.3s; }
+  .article-cta a:hover { background: rgba(90,122,155,0.1); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/es/" class="nav-logo">rpardo.ai</a>
+  <div class="nav-right">
+    <a href="/es/#work" class="nav-back">&larr; Back to Work</a>
+    <div class="nav-lang">
+      <span class="active">ES</span>
+      <span class="nav-lang-sep">/</span>
+      <a href="/product-strategy.html" style="text-decoration:none"><span class="inactive">EN</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ HEADER ═══════ -->
+<header class="cs-header">
+  <div class="cs-eyebrow">Caso de Estudio / Estrategia de Producto</div>
+  <h1 class="cs-title">Plataforma Financiera Autónoma</h1>
+  <p class="cs-subtitle">
+    La estrategia de producto completa para transformar las operaciones de tesorería de un unicornio europeo de HR-tech. Más de €2.000M en cuentas por cobrar en 10 países, gestionados con más de 20 hojas de cálculo. 22 páginas de arquitectura, gobernanza y diseño de despliegue.
+  </p>
+  <div class="cs-info">Rafael Pardo · Product Manager, Treasury & Cash Automation · Enero 2026</div>
+</header>
+
+<!-- ═══════ STATS ═══════ -->
+<div class="cs-stats">
+  <div class="cs-stat">
+    <div class="cs-stat-value">€2B+</div>
+    <div class="cs-stat-label">Cobros Anuales</div>
+  </div>
+  <div class="cs-stat">
+    <div class="cs-stat-value">10</div>
+    <div class="cs-stat-label">Países</div>
+  </div>
+  <div class="cs-stat">
+    <div class="cs-stat-value">9 me</div>
+    <div class="cs-stat-label">Plan de Despliegue</div>
+  </div>
+  <div class="cs-stat">
+    <div class="cs-stat-value">85%+</div>
+    <div class="cs-stat-label">Objetivo Precisión Forecast</div>
+  </div>
+</div>
+
+<!-- ═══════ BODY ═══════ -->
+<div class="cs-body">
+
+  <!-- Context -->
+  <div class="cs-section-label">Contexto</div>
+  <p>
+    Más de 20 Google Sheets gestionando €2.000M en cuentas por cobrar en 10 países. Previsiones de caja que se movían un 50% de una semana a otra. Covenants de securitización con prestamistas que podían convertir deuda en equity si las posiciones de caja se deterioraban. Las operaciones financieras de la empresa no eran solo ineficientes: eran un riesgo sistémico. El DSO estaba significativamente por detrás de los líderes del sector, con cada día de mejora desbloqueando millones en capital circulante.
+  </p>
+  <p>
+    Escribí esta estrategia como Product Manager de Treasury & Cash Automation. Representa el 95% de la versión final, completada justo antes de mi salida. La estrategia nunca se ejecutó, pero los frameworks, la arquitectura y el pensamiento son enteramente míos.
+  </p>
+
+  <!-- Solution -->
+  <div class="cs-section-label">La Solución</div>
+  <h2>Tres capas, un flywheel</h2>
+  <p>
+    La Plataforma Financiera Autónoma combina automatización enterprise (HighRadius) con agentes propietarios de IA entrenados en datos específicos de staffing. La arquitectura crea una ventaja compuesta: más transacciones producen mejores predicciones de IA, que impulsan mayores tasas de automatización, que generan datos más ricos para la IA. Cada nuevo país fortalece los patrones cross-market en lugar de crear silos aislados.
+  </p>
+</div>
+
+<!-- ═══════ ARCHITECTURE DIAGRAM ═══════ -->
+<div class="cs-diagram">
+  <img src="../assets/architecture-diagram.svg" alt="Arquitectura de Plataforma: Fundación de Datos, Capa de Automatización, Capa de Diferenciación AI, con Flywheel de Valor Compuesto">
+  <div class="cs-diagram-caption">Arquitectura de plataforma de tres capas con ciclo de valor compuesto</div>
+</div>
+
+<div class="cs-body">
+
+  <!-- Expandable sections -->
+  <div class="cs-section-label">Frameworks Clave</div>
+
+  <div class="cs-expand">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">Arquitectura de Diferenciación Competitiva</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <p>La ventaja estructural proviene de tres elementos que crean valor compuesto:</p>
+        <div class="cs-table-wrap">
+          <table class="cs-table">
+            <thead><tr><th>Capa de Ventaja</th><th>Qué Construimos</th><th>Por Qué es Defendible</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Modelo de Datos Nativo de Staffing</strong></td><td>Ontología custom para staffing temporal: ciclos de trabajadores, patrones de pago, demanda estacional</td><td>HighRadius no entiende staffing de serie. 12-18 meses para replicar</td></tr>
+              <tr><td><strong>Orquestación Multi-ERP</strong></td><td>Capa de abstracción única sobre NetSuite + sistemas legacy con sincronización en tiempo real</td><td>La deuda de integración se convierte en moat: el problema difícil que los competidores evitan</td></tr>
+              <tr><td><strong>IA sobre Datos Propietarios</strong></td><td>Modelos ML sobre 7 años de patrones de pago, efectividad de dunning, flujos de caja estacionales</td><td>Datos de entrenamiento de 10 países que ningún competidor puede acceder</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-expand">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">Gobernanza AI y Human-in-the-Loop</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <p>Las finanzas enterprise requieren los más altos estándares de gobernanza AI. Cada tipo de decisión tiene un nivel de autonomía definido:</p>
+        <div class="cs-table-wrap">
+          <table class="cs-table">
+            <thead><tr><th>Tipo de Decisión</th><th>Rol de la IA</th><th>Aprobación Humana</th></tr></thead>
+            <tbody>
+              <tr><td>Scoring de predicción de pagos</td><td>Recomienda orden de prioridad</td><td>No, solo informativo</td></tr>
+              <tr><td>Contenido de email de dunning</td><td>Genera borrador</td><td>Sí, antes de enviar</td></tr>
+              <tr><td>Ajuste de forecast de caja</td><td>Sugiere correcciones</td><td>Sí, aprobación de Treasury</td></tr>
+              <tr><td>Cambios de límite de crédito</td><td>Recomienda aumento/reducción</td><td>Sí, Credit Manager</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Cada decisión de IA se registra con timestamp, datos de entrada, versión del modelo, output y score de confianza. Las predicciones de pago incluyen los 3 factores principales que impulsan el score. Todas las versiones de modelo se rastrean con capacidad de rollback en 24 horas. Los logs de decisiones se conservan 7 años.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-expand">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">North Star Metric</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <div class="cs-callout">
+          <p><strong>Total Euro Value Influenced by AI-Assisted Actions</strong></p>
+        </div>
+        <p>Una métrica única que se compone a medida que cada componente mejora: # Active Users x Tasks per User (weekly) x AI Resolution Rate (%) x Average Euro Value per Task.</p>
+        <p>Example: 30 users x 50 tasks/week x 40% AI resolution x €500 avg value = €300K/week influenced by platform.</p>
+        <p>Cada componente tiene un owner y una palanca claros. Change Management es dueño de la adopción. Product Team es dueño de la cobertura de workflows y precisión del modelo. Customer Success es dueño de la expansión enterprise.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-expand">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">Change Management y Detección de Resistencia</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <p>La adopción de IA fracasa cuando las herramientas se imponen en lugar de co-diseñarse. La estrategia incluye un sistema de alerta temprana de resistencia que monitoriza señales de adopción semanalmente:</p>
+        <div class="cs-table-wrap">
+          <table class="cs-table">
+            <thead><tr><th>Señal</th><th>Umbral</th><th>Respuesta</th></tr></thead>
+            <tbody>
+              <tr><td>Frecuencia de login</td><td>&lt;3 logins/week</td><td>1:1 con usuario para entender bloqueos</td></tr>
+              <tr><td>Completación de training</td><td>&lt;80% by go-live</td><td>Involucración del manager</td></tr>
+              <tr><td>Uso de funcionalidades</td><td>Funcionalidades clave sin usar tras 2 semanas</td><td>Micro-training dirigido</td></tr>
+              <tr><td>Procesos en la sombra</td><td>Hojas de cálculo paralelas mantenidas</td><td>Análisis de causa raíz</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Mensaje central a los equipos: "La IA gestiona el trabajo repetitivo para que puedas centrarte en decisiones de juicio y relaciones con clientes." No una narrativa de reemplazo. Una narrativa de evolución.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-expand">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">Despliegue por Fases y Time-to-Value</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <p>Despliegue de 9 meses en tres fases, diseñado para demostrar valor temprano (los compradores enterprise esperan ROI en 3 meses):</p>
+        <div class="cs-table-wrap">
+          <table class="cs-table">
+            <thead><tr><th>Semana</th><th>Valor Entregado</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>W2</td><td>Dashboard de AR en tiempo real</td><td>Elimina consolidación manual de 4 horas</td></tr>
+              <tr><td>W4</td><td>Informe de caja diario automatizado</td><td>Treasury ahorra 1hr/día</td></tr>
+              <tr><td>W6</td><td>Lista de cobro priorizada por IA</td><td>Cobradores trabajan primero las cuentas de mayor probabilidad</td></tr>
+              <tr><td>W8</td><td>Línea base de precisión de forecast</td><td>Primera comparación IA vs. manual</td></tr>
+              <tr><td>W12</td><td>Go-Live Fase 1</td><td>Mejora de DSO medible</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-expand" style="border-bottom: 1px solid rgba(90,122,155,0.1);">
+    <div class="cs-expand-trigger" onclick="this.parentElement.classList.toggle('open')">
+      <span class="cs-expand-title">Alcance, Riesgos y Supuestos</span>
+      <span class="cs-expand-icon">+</span>
+    </div>
+    <div class="cs-expand-content">
+      <div class="cs-expand-inner">
+        <p><strong>En alcance:</strong> Implementación de HighRadius (Cash Forecasting, Collections, Credit Risk), integración con 10 ERPs, agentes de IA para predicción de pagos y optimización de dunning, dashboards para HQ y equipos locales, formación y change management.</p>
+        <p><strong>Explícitamente fuera de alcance:</strong> Reemplazo de ERP, Cuentas a Pagar, integración de nóminas, gestión de cuentas bancarias, estructuración de deals de securitización, expansión a nuevos países.</p>
+        <p>El registro de riesgos identifica 7 supuestos clave con ratings de probabilidad/impacto y mitigaciones concretas. Los triggers de monitorización están definidos para cada uno: si alguno se activa, el enfoque se reevalúa en lugar de forzarse.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download CTA -->
+  <a href="../assets/product-strategy-anonymised.pdf" target="_blank" rel="noopener" class="cs-download" style="text-decoration:none;">
+    <div class="cs-download-text">
+      <h3>Documento Completo (PDF, 22 páginas)</h3>
+      <p>Incluye user personas, matriz RACI, plan de comunicación, mitigación de riesgos AI y apéndices completos.</p>
+    </div>
+    <span class="cs-download-btn">Descargar PDF &rarr;</span>
+  </a>
+
+  <!-- Author's Reflection -->
+  <div class="cs-reflection">
+    <div class="cs-section-label">Reflexión del Autor</div>
+    <h2>Por Qué Importa Este Documento</h2>
+    <p>
+      Esta estrategia fue diseñada para ejecutarse. Cambios organizativos impidieron su implementación, pero el pensamiento que contiene representa algo que creo es raro y cada vez más valioso: <strong>la perspectiva de alguien que ha operado los sistemas que la IA está a punto de reemplazar</strong>.
+    </p>
+    <p>
+      Pasé siete años dentro de operaciones de tesorería a escala. Reconcilié posiciones de caja en 10 países. Construí los modelos de unit economics que llegaban al consejo. Vi a profesionales senior de finanzas dedicar el 40% de su tiempo a tareas que un agente bien diseñado podría resolver en segundos. Esa experiencia me enseñó algo que la mayoría de AI product managers no tienen: una comprensión intuitiva de dónde falla la automatización, dónde el juicio humano sigue siendo esencial, y dónde está el valor real.
+    </p>
+    <p>
+      La respuesta, consistentemente, está en el último 30%. El primer 70% de la automatización financiera es directo: workflows basados en reglas, reconciliaciones estándar, reporting con plantillas. El 30% restante, las excepciones, los casos límite, las decisiones de juicio que requieren contexto entre mercados y contrapartes, es donde los sistemas autónomos crean valor genuino o se convierten en errores costosos.
+    </p>
+    <p>
+      Creo que la tesorería será una de las primeras funciones enterprise en ser completamente autónoma. No porque la tecnología sea fácil, sino porque los datos son estructurados, las reglas están bien definidas, y el coste de las operaciones manuales es medible y creciente. La transición no la liderarán investigadores de IA. La liderarán operadores que entienden tanto el dominio como la tecnología con la profundidad suficiente para diseñar sistemas en los que los equipos de finanzas realmente confíen.
+    </p>
+    <p class="cs-closing">Ese es el rol que pretendo desempeñar.</p>
+  </div>
+</div>
+
+<!-- ═══════ AUTHOR FOOTER ═══════ -->
+  <div class="article-cta">
+    <a href="/es/#work">Ver mi trabajo &rarr;</a>
+    <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener">Agendar una conversación &rarr;</a>
+  </div>
+
+<div class="article-footer">
+  <div class="article-author">
+    <div class="author-info">
+      <div class="author-name">Rafael Pardo</div>
+      <div class="author-bio">AI Product Manager. Construí la infraestructura de tesorería de un unicornio de €2.300M. Ahora diseño agentes de IA que la hacen autónoma. <a href="mailto:rafael@rpardo.ai">rafael@rpardo.ai</a> · <a href="https://www.linkedin.com/in/rpardo-ai/" target="_blank">LinkedIn</a></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">rpardo.ai</div>
+  <div class="footer-copy">&copy; 2026 Rafael Pardo. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
