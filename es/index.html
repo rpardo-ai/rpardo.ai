@@ -46,9 +46,8 @@
   "knowsAbout": ["AI Product Management", "Automatización de Tesorería", "Agentes Autónomos", "Cash Forecasting", "Optimización de Cobros", "Angel Investing"]
 }
 </script>
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060B15'/%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%230E1520'/%3E%3Ctext x='16' y='22' font-family='system-ui' font-weight='700' font-size='16' fill='%235A7A9B' text-anchor='middle'%3ERP%3C/text%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='none' stroke='%235A7A9B' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23060B15'/%3E%3Ctext x='90' y='118' font-family='system-ui' font-weight='700' font-size='90' fill='%235A7A9B' text-anchor='middle'%3ERP%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,10 +61,10 @@
     --accent: #5A7A9B;
     --accent-hi: #8AACC6;
     --accent-pale: #B2CBDB;
-    --steel: #525250;
-    --ash: #6E6B64;
-    --warm: #96918A;
-    --silver: #BAB6AE;
+    --steel: #5E5D5B;
+    --ash: #7D7970;
+    --warm: #AAA59E;
+    --silver: #CBC7BF;
     --bone: #E0DDD6;
     --cream: #F0EDE6;
     --green: #5A9B6E;
@@ -332,6 +331,31 @@
     transform: translateY(-1px);
   }
 
+  .hero-accent {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-accent span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero-accent span:nth-child(1) { opacity: 0.2; }
+  .hero-accent span:nth-child(2) { opacity: 0.35; }
+  .hero-accent span:nth-child(3) { opacity: 0.6; width: 32px; height: 1px; border-radius: 0; }
+  .hero-accent span:nth-child(4) { opacity: 0.35; }
+  .hero-accent span:nth-child(5) { opacity: 0.2; }
+
   /* ═══════ PROOF BAR ═══════ */
   .proof-bar {
     background: var(--deep);
@@ -501,6 +525,19 @@
     background: rgba(90,122,155,0.06);
   }
 
+  .about-pullquote {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent-hi);
+    line-height: 1.6;
+    padding: 28px 0 28px 28px;
+    margin: 12px 0 20px;
+    border-left: 2px solid var(--accent);
+    position: relative;
+  }
+
   /* ═══════ THESIS ═══════ */
   .thesis {
     background: var(--void);
@@ -647,6 +684,33 @@
     color: var(--silver);
   }
 
+  .case-card--featured {
+    position: relative;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+    margin-left: -16px;
+  }
+
+  .case-card--featured .case-number {
+    opacity: 0.7;
+    color: var(--accent-hi);
+  }
+
+  .case-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-hi);
+    background: rgba(90,122,155,0.1);
+    border: 1px solid rgba(90,122,155,0.18);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
   /* ═══════ INSIGHTS ═══════ */
   .insights {
     background: var(--black);
@@ -690,6 +754,21 @@
     align-items: center;
     gap: 12px;
   }
+
+  .blog-cat-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .blog-cat-dot--thesis { background: var(--accent); }
+  .blog-cat-dot--framework { background: var(--accent-pale); }
+  .blog-cat-dot--technical { background: var(--green); }
+  .blog-cat-dot--architecture { background: var(--accent-hi); }
 
   .blog-soon {
     font-family: 'JetBrains Mono', monospace;
@@ -947,6 +1026,9 @@
     <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener" class="cta-primary">Agendar una conversación</a>
     <a href="#work" class="cta-secondary">Ver mi trabajo</a>
   </div>
+  <div class="hero-accent" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
 </section>
 
 <!-- ═══════ PROOF BAR ═══════ -->
@@ -988,6 +1070,10 @@
         <p class="about-paragraph reveal">
           Esa experiencia me enseñó dónde se crea el valor real en las operaciones financieras, y dónde se desperdicia. La tesorería es repetitiva, basada en reglas y de alto impacto: el entorno perfecto para la IA. Así que empecé a construir. Diseñé agentes de IA con Claude para la aplicación de pagos y el matching de facturas, conseguí una mejora del 30% en la precisión de las previsiones, y construí la visión de producto para sistemas autónomos de tesorería que reducen el trabajo manual a la mitad. Sé exactamente dónde la IA genera ROI en finanzas, y dónde sigue siendo humo.
         </p>
+        <blockquote class="about-pullquote reveal">
+          Sé exactamente dónde la IA genera ROI en finanzas, y dónde sigue siendo humo.
+        </blockquote>
+
         <p class="about-paragraph reveal">
           Complemento esa profundidad operativa con formación formal en AI y ML: la Especialización en Machine Learning de Stanford, el programa de certificación de Anthropic y el currículo de AI Product Management de Reforge. No para coleccionar credenciales, sino para construir la intuición técnica que separa a un product manager que usa buzzwords de IA de uno que realmente puede llevar sistemas autónomos a producción.
         </p>
@@ -1021,7 +1107,6 @@
 <!-- ═══════ THESIS ═══════ -->
 <section class="thesis" id="thesis">
   <div class="thesis-inner">
-    <div class="thesis-eyebrow reveal">Tesis</div>
     <p class="thesis-statement reveal">
       La tesorería será la primera función de back-office en ser <em>completamente autónoma</em>. Las personas que construyan ese futuro no serán tecnólogos adivinando cómo funcionan las operaciones financieras. Serán operadores que aprendieron a construir.
     </p>
@@ -1084,10 +1169,10 @@
       </div>
     </div>
 
-    <div class="case-card reveal">
+    <div class="case-card case-card--featured reveal">
       <div class="case-number">04</div>
       <div class="case-content">
-        <h3>Plataforma Financiera Autónoma: Estrategia de Producto</h3>
+        <h3>Plataforma Financiera Autónoma: Estrategia de Producto <span class="case-badge">Case Study</span></h3>
         <div class="case-sub">Estrategia de Producto / Documento de 22 páginas / Anonimizado</div>
         <p>Autor del documento completo de estrategia de producto para una plataforma autónoma de tesorería en un unicornio europeo de HR-tech (€2B+ en cobros anuales, 10 países). Definí la arquitectura de tres capas (fundación de datos, automatización, diferenciación con IA), el moat competitivo a través de datos propietarios de staffing y orquestación multi-ERP, la North Star metric con descomposición multiplicativa, el framework de gobernanza AI con requisitos de human-in-the-loop por tipo de decisión, el despliegue por fases en 9 meses, y la estrategia de change management incluyendo un sistema de alerta temprana de resistencia. El documento representa el 95% de la versión final, completado antes de mi salida de la empresa.</p>
         <div class="case-tags">
@@ -1102,7 +1187,7 @@
       </div>
     </div>
 
-    <div class="case-card reveal">
+    <div class="case-card case-card--featured reveal">
       <div class="case-number">05</div>
       <div class="case-content">
         <h3>AI Treasury Analyst: de PoC a producción</h3>
@@ -1128,7 +1213,7 @@
 
     <a href="treasury-autonomous.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Tesis / Tesorería + IA</span>
+        <span><span class="blog-cat-dot blog-cat-dot--thesis"></span>Tesis / Tesorería + IA</span>
         <span class="blog-soon">9 min</span>
       </div>
       <div class="blog-title">Por qué la tesorería será la primera función de back-office en ser completamente autónoma</div>
@@ -1137,7 +1222,7 @@
 
     <a href="operators-edge.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Framework / Product Management</span>
+        <span><span class="blog-cat-dot blog-cat-dot--framework"></span>Framework / Product Management</span>
         <span class="blog-soon">8 min</span>
       </div>
       <div class="blog-title">La ventaja del operador: por qué los mejores AI PMs han gestionado los sistemas que están reemplazando</div>
@@ -1146,7 +1231,7 @@
 
     <a href="treasury-analyst-claude.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Técnico / Construyendo con Claude</span>
+        <span><span class="blog-cat-dot blog-cat-dot--technical"></span>Técnico / Construyendo con Claude</span>
         <span class="blog-soon">11 min</span>
       </div>
       <div class="blog-title">Cómo construí un analista de tesorería en Claude (y lo que me enseñó sobre diseño de productos de IA)</div>
@@ -1155,7 +1240,7 @@
 
     <a href="multi-agent-failure.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Arquitectura / Sistemas AI</span>
+        <span><span class="blog-cat-dot blog-cat-dot--architecture"></span>Arquitectura / Sistemas AI</span>
         <span class="blog-soon">9 min</span>
       </div>
       <div class="blog-title">Por Qué Fracasarán la Mayoría de Implementaciones Multi-Agente Enterprise</div>
@@ -1164,7 +1249,7 @@
 
     <a href="ai-pm-orchestrator.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Framework / AI Product Management</span>
+        <span><span class="blog-cat-dot blog-cat-dot--framework"></span>Framework / AI Product Management</span>
         <span class="blog-soon">8 min</span>
       </div>
       <div class="blog-title">El AI Product Manager Ha Muerto. Larga Vida al AI Orchestrator.</div>

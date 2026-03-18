@@ -46,9 +46,8 @@
   "knowsAbout": ["AI Product Management", "Treasury Automation", "Autonomous Agents", "Cash Forecasting", "Collections Optimization", "Angel Investing"]
 }
 </script>
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060B15'/%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%230E1520'/%3E%3Ctext x='16' y='22' font-family='system-ui' font-weight='700' font-size='16' fill='%235A7A9B' text-anchor='middle'%3ERP%3C/text%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='none' stroke='%235A7A9B' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23060B15'/%3E%3Ctext x='90' y='118' font-family='system-ui' font-weight='700' font-size='90' fill='%235A7A9B' text-anchor='middle'%3ERP%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,10 +61,10 @@
     --accent: #5A7A9B;
     --accent-hi: #8AACC6;
     --accent-pale: #B2CBDB;
-    --steel: #525250;
-    --ash: #6E6B64;
-    --warm: #96918A;
-    --silver: #BAB6AE;
+    --steel: #5E5D5B;
+    --ash: #7D7970;
+    --warm: #AAA59E;
+    --silver: #CBC7BF;
     --bone: #E0DDD6;
     --cream: #F0EDE6;
     --green: #5A9B6E;
@@ -332,6 +331,31 @@
     transform: translateY(-1px);
   }
 
+  .hero-accent {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-accent span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero-accent span:nth-child(1) { opacity: 0.2; }
+  .hero-accent span:nth-child(2) { opacity: 0.35; }
+  .hero-accent span:nth-child(3) { opacity: 0.6; width: 32px; height: 1px; border-radius: 0; }
+  .hero-accent span:nth-child(4) { opacity: 0.35; }
+  .hero-accent span:nth-child(5) { opacity: 0.2; }
+
   /* ═══════ PROOF BAR ═══════ */
   .proof-bar {
     background: var(--deep);
@@ -501,6 +525,19 @@
     background: rgba(90,122,155,0.06);
   }
 
+  .about-pullquote {
+    font-family: 'Newsreader', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent-hi);
+    line-height: 1.6;
+    padding: 28px 0 28px 28px;
+    margin: 12px 0 20px;
+    border-left: 2px solid var(--accent);
+    position: relative;
+  }
+
   /* ═══════ THESIS ═══════ */
   .thesis {
     background: var(--void);
@@ -647,6 +684,33 @@
     color: var(--silver);
   }
 
+  .case-card--featured {
+    position: relative;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+    margin-left: -16px;
+  }
+
+  .case-card--featured .case-number {
+    opacity: 0.7;
+    color: var(--accent-hi);
+  }
+
+  .case-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-hi);
+    background: rgba(90,122,155,0.1);
+    border: 1px solid rgba(90,122,155,0.18);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
   /* ═══════ INSIGHTS ═══════ */
   .insights {
     background: var(--black);
@@ -690,6 +754,21 @@
     align-items: center;
     gap: 12px;
   }
+
+  .blog-cat-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .blog-cat-dot--thesis { background: var(--accent); }
+  .blog-cat-dot--framework { background: var(--accent-pale); }
+  .blog-cat-dot--technical { background: var(--green); }
+  .blog-cat-dot--architecture { background: var(--accent-hi); }
 
   .blog-soon {
     font-family: 'JetBrains Mono', monospace;
@@ -947,6 +1026,9 @@
     <a href="https://calendar.app.google/XjYf9iPya1X9JUWd7" target="_blank" rel="noopener" class="cta-primary">Schedule a conversation</a>
     <a href="#work" class="cta-secondary">See my work</a>
   </div>
+  <div class="hero-accent" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
 </section>
 
 <!-- ═══════ PROOF BAR ═══════ -->
@@ -988,6 +1070,10 @@
         <p class="about-paragraph reveal">
           That experience taught me where real value is created in financial operations, and where it's wasted. Treasury is repetitive, rule-based, and high-stakes: the perfect environment for AI. So I started building. I designed AI agents using Claude for cash application and invoice matching, achieved a 30% improvement in forecast accuracy, and built the product vision for autonomous treasury systems that reduce manual work by half. I know exactly where AI delivers ROI in finance, and where it's still hype.
         </p>
+        <blockquote class="about-pullquote reveal">
+          I know exactly where AI delivers ROI in finance, and where it's still hype.
+        </blockquote>
+
         <p class="about-paragraph reveal">
           I complement that operational depth with formal AI and ML training: Stanford's Machine Learning Specialisation, Anthropic's certification programme, and Reforge's AI Product Management curriculum. Not to collect credentials, but to build the technical intuition that separates a product manager who uses AI buzzwords from one who can actually ship autonomous systems.
         </p>
@@ -1021,7 +1107,6 @@
 <!-- ═══════ THESIS ═══════ -->
 <section class="thesis" id="thesis">
   <div class="thesis-inner">
-    <div class="thesis-eyebrow reveal">Thesis</div>
     <p class="thesis-statement reveal">
       Treasury will be the first back-office function to go <em>fully autonomous</em>. The people who build that future won't be technologists guessing at financial operations. They'll be operators who learned to build.
     </p>
@@ -1084,10 +1169,10 @@
       </div>
     </div>
 
-    <div class="case-card reveal">
+    <div class="case-card case-card--featured reveal">
       <div class="case-number">04</div>
       <div class="case-content">
-        <h3>Autonomous Finance Platform: Product Strategy</h3>
+        <h3>Autonomous Finance Platform: Product Strategy <span class="case-badge">Case Study</span></h3>
         <div class="case-sub">Product Strategy / 22-Page Document / Anonymised</div>
         <p>Authored the complete product strategy for an autonomous treasury platform at a European HR-tech unicorn (€2B+ annual receivables, 10 countries). Defined the three-layer architecture (data foundation, automation, AI differentiation), competitive moat through proprietary staffing data and multi-ERP orchestration, North Star metric with multiplicative decomposition, AI governance framework with human-in-the-loop requirements by decision type, phased 9-month rollout, and change management strategy including a resistance early warning system. The document represents 95% of the final version, completed before departure.</p>
         <div class="case-tags">
@@ -1102,10 +1187,10 @@
       </div>
     </div>
 
-    <div class="case-card reveal">
+    <div class="case-card case-card--featured reveal">
       <div class="case-number">05</div>
       <div class="case-content">
-        <h3>AI Treasury Analyst: From PoC to Production</h3>
+        <h3>AI Treasury Analyst: From PoC to Production <span class="case-badge">Case Study</span></h3>
         <div class="case-sub">Applied AI Research / Claude Skill Architecture</div>
         <p>Designed and built a custom Claude skill that functions as an autonomous treasury analyst: ingesting real financial data, applying weighted moving averages with recency decay (λ=0.9), seasonal indices per collection bucket, and partial payment handling to produce CFO-ready cash flow forecasts. The proof of concept, iterated through 40+ versions, improved forecast accuracy by 30% vs. simple averages. Key design decisions: structured JSON outputs over free text, deterministic calculation rails (LLM orchestrates, code calculates), and country-specific configuration files encoding market-level payment norms. Production version currently under development, targeting a fully interactive demo with live data.</p>
         <div class="case-tags">
@@ -1128,7 +1213,7 @@
 
     <a href="treasury-autonomous.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Thesis / Treasury + AI</span>
+        <span><span class="blog-cat-dot blog-cat-dot--thesis"></span>Thesis / Treasury + AI</span>
         <span class="blog-soon">9 min read</span>
       </div>
       <div class="blog-title">Why Treasury Will Be the First Back-Office Function to Go Fully Autonomous</div>
@@ -1137,7 +1222,7 @@
 
     <a href="operators-edge.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Framework / Product Management</span>
+        <span><span class="blog-cat-dot blog-cat-dot--framework"></span>Framework / Product Management</span>
         <span class="blog-soon">8 min read</span>
       </div>
       <div class="blog-title">The Operator's Edge: Why the Best AI PMs Have Run the Systems They're Replacing</div>
@@ -1146,7 +1231,7 @@
 
     <a href="treasury-analyst-claude.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Technical / Building with Claude</span>
+        <span><span class="blog-cat-dot blog-cat-dot--technical"></span>Technical / Building with Claude</span>
         <span class="blog-soon">11 min read</span>
       </div>
       <div class="blog-title">How I Built a Treasury Analyst in Claude (And What It Taught Me About AI Product Design)</div>
@@ -1155,7 +1240,7 @@
 
     <a href="multi-agent-failure.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Architecture / AI Systems</span>
+        <span><span class="blog-cat-dot blog-cat-dot--architecture"></span>Architecture / AI Systems</span>
         <span class="blog-soon">9 min read</span>
       </div>
       <div class="blog-title">Why Most Enterprise Multi-Agent Implementations Will Fail</div>
@@ -1164,7 +1249,7 @@
 
     <a href="ai-pm-orchestrator.html" class="blog-card reveal" style="text-decoration:none;color:inherit;display:block;">
       <div class="blog-meta">
-        <span>Framework / AI Product Management</span>
+        <span><span class="blog-cat-dot blog-cat-dot--framework"></span>Framework / AI Product Management</span>
         <span class="blog-soon">8 min read</span>
       </div>
       <div class="blog-title">The AI Product Manager Is Dead. Long Live the AI Orchestrator.</div>
